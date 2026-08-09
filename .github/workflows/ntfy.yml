@@ -1,0 +1,48 @@
+# Push Upptime downtime / recovery to ntfy, so a web-down alert lands on the
+# phone alongside the on-box watchdog and the healthchecks.io dead-man.
+#
+# Upptime opens a GitHub issue titled "<emoji> <site> is down" when a monitor
+# fails, and closes it on recovery. We fire on those two events. The topic URL
+# lives in the repo secret NTFY_URL (Settings -> Secrets -> Actions), never in
+# the repo, since anyone who knows the topic can read your alerts.
+name: ntfy
+
+on:
+  issues:
+    types: [opened, closed]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push to ntfy
+        env:
+          NTFY_URL: ${{ secrets.NTFY_URL }}
+          ACTION: ${{ github.event.action }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+        run: |
+          [ -z "$NTFY_URL" ] && { echo "NTFY_URL secret not set; skipping."; exit 0; }
+
+          # Only react to Upptime's downtime issues, not any manual issue.
+          case "$ISSUE_TITLE" in
+            *[Dd]own*) ;;
+            *) echo "Not an Upptime downtime issue; skipping."; exit 0 ;;
+          esac
+
+          if [ "$ACTION" = "opened" ]; then
+            HDR="ESPGeiger: site down"; PRIO="high"; TAGS="red_circle"
+          else
+            HDR="ESPGeiger: recovered"; PRIO="default"; TAGS="white_check_mark"
+          fi
+
+          # ISSUE_TITLE carries emoji (unsafe in an HTTP header), so it goes in
+          # the body; the header title stays plain ASCII. The Click header makes
+          # the notification tap straight through to the GitHub issue.
+          curl -fsS -m 15 --retry 2 \
+            -H "Title: $HDR" \
+            -H "Priority: $PRIO" \
+            -H "Tags: $TAGS" \
+            -H "Click: $ISSUE_URL" \
+            -d "$ISSUE_TITLE" \
+            "$NTFY_URL"
