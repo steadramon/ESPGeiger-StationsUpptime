@@ -16,6 +16,11 @@ sites:
 status-website:
   cname: upptime.espgeiger.com
   name: ESPGeiger status
+  # ESPGeiger radiation-trefoil mark (served from the main site).
+  faviconSvg: https://stations.espgeiger.com/favicon.svg
+  favicon: https://stations.espgeiger.com/favicon-96x96.png
+  logoUrl: https://stations.espgeiger.com/favicon.svg
+  theme: light
   introTitle: "Live status of the ESPGeiger station registry and firmware API."
   introMessage: Real-time uptime for stations.espgeiger.com and api.espgeiger.com, powered by GitHub Actions. No server to run, nothing in the serving path.
   navbar:

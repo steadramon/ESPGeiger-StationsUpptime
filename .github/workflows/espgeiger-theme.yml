@@ -1,0 +1,47 @@
+# ESPGeiger brand overrides for the status site.
+#
+# Upptime's status-website config has no custom-CSS hook, and editing the
+# generated site.yml would be wiped by the template updater. So instead this
+# runs AFTER each Static Site CI deploy and appends a few ESPGeiger brand
+# variables to the deployed global.css. global.css loads last in the page
+# <head>, so its :root overrides win over whichever theme is active.
+#
+# It lives in its own workflow file (not a template-generated one), so the
+# Upptime template updater never touches it. Idempotent: skips if already
+# applied. Regenerated cleanly on every rebuild (the deploy replaces
+# global.css, then this re-appends).
+name: ESPGeiger theme
+
+on:
+  workflow_run:
+    workflows: ["Static Site CI"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  brand:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          token: ${{ secrets.GH_PAT || github.token }}
+      - name: Append ESPGeiger brand variables to global.css
+        run: |
+          f=global.css
+          [ -f "$f" ] || { echo "no global.css in gh-pages; nothing to do"; exit 0; }
+          if grep -q "ESPGeiger brand overrides" "$f"; then
+            echo "already branded; nothing to do"; exit 0
+          fi
+          # Blue #0066cc nav accent + link; amber elevated; red danger — the
+          # ESPGeiger palette. Single printf so there are no heredoc/YAML traps.
+          printf '\n/* ESPGeiger brand overrides */\n:root{--nav-current-border-bottom-color:#0066cc;--up-border-left-color:#22c55e;--tag-up-background-color:#22c55e;--degraded-border-left-color:#f59e0b;--down-border-left-color:#dc2626;--tag-down-background-color:#dc2626}\na{color:#0066cc}\n' >> "$f"
+          git config user.name "ESPGeiger Bot"
+          git config user.email "73812536+upptime-bot@users.noreply.github.com"
+          git add "$f"
+          git commit -m "Apply ESPGeiger brand overrides [skip ci]"
+          git push
