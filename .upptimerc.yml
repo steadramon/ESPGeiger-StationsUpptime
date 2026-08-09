@@ -6,7 +6,7 @@ sites:
     url: https://stations.espgeiger.com/health
     __dangerous__body-down-if-text-missing: "OK"
   - name: API (firmware)
-    url: https://api.espgeiger.com/health
+    url: http://api.espgeiger.com/health
     __dangerous__body-down-if-text-missing: "OK"
   - name: Main site
     url: https://espgeiger.com/
