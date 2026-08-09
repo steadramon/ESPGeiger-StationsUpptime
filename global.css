@@ -201,7 +201,3 @@ article .graph {
   opacity: var(--graph-opacity);
   filter: var(--graph-filter);
 }
-
-/* ESPGeiger brand overrides */
-:root{--nav-current-border-bottom-color:#0066cc;--up-border-left-color:#22c55e;--tag-up-background-color:#22c55e;--degraded-border-left-color:#f59e0b;--down-border-left-color:#dc2626;--tag-down-background-color:#dc2626}
-a{color:#0066cc}
