@@ -1,15 +1,6 @@
-# ESPGeiger brand overrides for the status site.
-#
-# Upptime's status-website config has no custom-CSS hook, and editing the
-# generated site.yml would be wiped by the template updater. So instead this
-# runs AFTER each Static Site CI deploy and appends a few ESPGeiger brand
-# variables to the deployed global.css. global.css loads last in the page
-# <head>, so its :root overrides win over whichever theme is active.
-#
-# It lives in its own workflow file (not a template-generated one), so the
-# Upptime template updater never touches it. Idempotent: skips if already
-# applied. Regenerated cleanly on every rebuild (the deploy replaces
-# global.css, then this re-appends).
+# Appends ESPGeiger brand CSS to global.css after each Static Site CI deploy
+# (Upptime has no custom-CSS config hook; global.css loads last, so it wins).
+# Own file, so the template updater leaves it alone. Idempotent.
 name: ESPGeiger theme
 
 on:
@@ -30,22 +21,12 @@ jobs:
         with:
           ref: gh-pages
           token: ${{ secrets.GH_PAT || github.token }}
-      - name: Append ESPGeiger brand variables to global.css
+      - name: Append ESPGeiger brand CSS
         run: |
           f=global.css
-          [ -f "$f" ] || { echo "no global.css in gh-pages; nothing to do"; exit 0; }
-          if grep -q "ESPGeiger brand overrides" "$f"; then
-            echo "already branded; nothing to do"; exit 0
-          fi
-          # Full ESPGeiger light palette: neutralise Upptime's teal base to
-          # white + Bootstrap grey, blue #0066cc accent/links/buttons, and the
-          # green/amber/red status scale. Single printf so there are no
-          # heredoc/YAML traps. theme:light means the page is light-only, so
-          # forcing these base values in global.css (loads last) is safe.
-          # Monospace ONLY the brand wordmark (the "ESPGeiger status" text in
-          # the logo link, .logo div) using the main site's --bs-font-monospace
-          # stack (system fonts, nothing to download). Everything else keeps the
-          # default sans.
+          [ -f "$f" ] || { echo "no global.css; nothing to do"; exit 0; }
+          grep -q "ESPGeiger brand overrides" "$f" && { echo "already branded"; exit 0; }
+          # White+grey base, #0066cc accent, status colours, mono wordmark (.logo div).
           printf '\n/* ESPGeiger brand overrides */\n:root{--body-background-color:#f8f9fa;--body-text-color:#212529;--card-background-color:#ffffff;--nav-background-color:#ffffff;--nav-border-bottom-color:#dee2e6;--card-border-color:#dee2e6;--nav-current-border-bottom-color:#0066cc;--up-border-left-color:#22c55e;--tag-up-background-color:#22c55e;--degraded-border-left-color:#f59e0b;--tag-degraded-background-color:#f59e0b;--change-background-color:#f59e0b;--down-border-left-color:#dc2626;--tag-down-background-color:#dc2626;--down-background-color:#fee2e2;--error-button-background-color:#0066cc;--error-button-border-color:#004a99;--submit-button-background-color:#0066cc;--submit-button-border-color:#004a99}\n.logo div{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberty Mono","Courier New",monospace;font-weight:600;letter-spacing:-.02em}\na{color:#0066cc}\n' >> "$f"
           git config user.name "ESPGeiger Bot"
           git config user.email "73812536+upptime-bot@users.noreply.github.com"

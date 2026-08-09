@@ -1,6 +1,10 @@
 owner: steadramon
 repo: ESPGeiger-StationsUpptime
 
+# Check every 10 min (GitHub's scheduler is best-effort, often slower).
+workflowSchedule:
+  uptime: "*/10 * * * *"
+
 sites:
   - name: Stations site
     url: https://stations.espgeiger.com/health
