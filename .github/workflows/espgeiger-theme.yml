@@ -42,10 +42,11 @@ jobs:
           # green/amber/red status scale. Single printf so there are no
           # heredoc/YAML traps. theme:light means the page is light-only, so
           # forcing these base values in global.css (loads last) is safe.
-          # Monospace stack matches the main site's --bs-font-monospace (system
-          # fonts, nothing to download). Form controls reset to inherit so they
-          # pick it up too.
-          printf '\n/* ESPGeiger brand overrides */\n:root{--body-background-color:#f8f9fa;--body-text-color:#212529;--card-background-color:#ffffff;--nav-background-color:#ffffff;--nav-border-bottom-color:#dee2e6;--card-border-color:#dee2e6;--nav-current-border-bottom-color:#0066cc;--up-border-left-color:#22c55e;--tag-up-background-color:#22c55e;--degraded-border-left-color:#f59e0b;--tag-degraded-background-color:#f59e0b;--change-background-color:#f59e0b;--down-border-left-color:#dc2626;--tag-down-background-color:#dc2626;--down-background-color:#fee2e2;--error-button-background-color:#0066cc;--error-button-border-color:#004a99;--submit-button-background-color:#0066cc;--submit-button-border-color:#004a99}\nbody{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberty Mono","Courier New",monospace}\nbody button,body input,body select,body textarea{font-family:inherit}\na{color:#0066cc}\n' >> "$f"
+          # Monospace ONLY the brand wordmark (the "ESPGeiger status" text in
+          # the logo link, .logo div) using the main site's --bs-font-monospace
+          # stack (system fonts, nothing to download). Everything else keeps the
+          # default sans.
+          printf '\n/* ESPGeiger brand overrides */\n:root{--body-background-color:#f8f9fa;--body-text-color:#212529;--card-background-color:#ffffff;--nav-background-color:#ffffff;--nav-border-bottom-color:#dee2e6;--card-border-color:#dee2e6;--nav-current-border-bottom-color:#0066cc;--up-border-left-color:#22c55e;--tag-up-background-color:#22c55e;--degraded-border-left-color:#f59e0b;--tag-degraded-background-color:#f59e0b;--change-background-color:#f59e0b;--down-border-left-color:#dc2626;--tag-down-background-color:#dc2626;--down-background-color:#fee2e2;--error-button-background-color:#0066cc;--error-button-border-color:#004a99;--submit-button-background-color:#0066cc;--submit-button-border-color:#004a99}\n.logo div{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberty Mono","Courier New",monospace;font-weight:600;letter-spacing:-.02em}\na{color:#0066cc}\n' >> "$f"
           git config user.name "ESPGeiger Bot"
           git config user.email "73812536+upptime-bot@users.noreply.github.com"
           git add "$f"
