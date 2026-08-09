@@ -201,3 +201,9 @@ article .graph {
   opacity: var(--graph-opacity);
   filter: var(--graph-filter);
 }
+
+/* ESPGeiger brand overrides */
+:root{--body-background-color:#f8f9fa;--body-text-color:#212529;--card-background-color:#ffffff;--nav-background-color:#ffffff;--nav-border-bottom-color:#dee2e6;--card-border-color:#dee2e6;--nav-current-border-bottom-color:#0066cc;--up-border-left-color:#22c55e;--tag-up-background-color:#22c55e;--degraded-border-left-color:#f59e0b;--tag-degraded-background-color:#f59e0b;--change-background-color:#f59e0b;--down-border-left-color:#dc2626;--tag-down-background-color:#dc2626;--down-background-color:#fee2e2;--error-button-background-color:#0066cc;--error-button-border-color:#004a99;--submit-button-background-color:#0066cc;--submit-button-border-color:#004a99}
+body{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberty Mono","Courier New",monospace}
+body button,body input,body select,body textarea{font-family:inherit}
+a{color:#0066cc}
