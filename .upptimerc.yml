@@ -25,6 +25,32 @@ status-website:
   favicon: https://stations.espgeiger.com/favicon-96x96.png
   logoUrl: https://stations.espgeiger.com/favicon.svg
   theme: light
+  # ESPGeiger palette: white/grey base, #0066cc accent, status colours, and the
+  # main site's monospace stack on just the wordmark (.logo div).
+  css: |
+    :root {
+      --body-background-color: #f8f9fa;
+      --body-text-color: #212529;
+      --card-background-color: #ffffff;
+      --nav-background-color: #ffffff;
+      --nav-border-bottom-color: #dee2e6;
+      --card-border-color: #dee2e6;
+      --nav-current-border-bottom-color: #0066cc;
+      --up-border-left-color: #22c55e;
+      --tag-up-background-color: #22c55e;
+      --degraded-border-left-color: #f59e0b;
+      --tag-degraded-background-color: #f59e0b;
+      --change-background-color: #f59e0b;
+      --down-border-left-color: #dc2626;
+      --tag-down-background-color: #dc2626;
+      --down-background-color: #fee2e2;
+      --error-button-background-color: #0066cc;
+      --error-button-border-color: #004a99;
+      --submit-button-background-color: #0066cc;
+      --submit-button-border-color: #004a99;
+    }
+    .logo div { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberty Mono", "Courier New", monospace; font-weight: 600; letter-spacing: -0.02em; }
+    a { color: #0066cc; }
   introTitle: "Live status of the ESPGeiger station registry and firmware API."
   introMessage: Real-time uptime for stations.espgeiger.com and api.espgeiger.com, powered by GitHub Actions. No server to run, nothing in the serving path.
   navbar:
