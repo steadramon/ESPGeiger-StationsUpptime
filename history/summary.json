@@ -4,9 +4,9 @@
     "url": "https://stations.espgeiger.com/health",
     "icon": "https://icons.duckduckgo.com/ip3/stations.espgeiger.com.ico",
     "slug": "stations-site",
-    "status": "up",
+    "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.99%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
@@ -15,7 +15,9 @@
     "timeWeek": 368,
     "timeMonth": 409,
     "timeYear": 409,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-08-18": 0
+    }
   },
   {
     "name": "API (firmware)",
